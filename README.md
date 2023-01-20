@@ -1,2 +1,3 @@
-# coding-test-baekjoonhub
-This is a auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+# coding-test-record
+
+✏️ 알고리즘 문제풀이 기록
