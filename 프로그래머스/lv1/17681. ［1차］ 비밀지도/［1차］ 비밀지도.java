@@ -5,9 +5,9 @@ class Solution {
         String[] answer = new String[n];
 
         for (int i = 0; i < n; i++) {
-            String format = "%0" + n + "d";
+            String format = "%" + n + "s";
             String binary = Integer.toBinaryString(arr1[i] | arr2[i]);
-            answer[i] = String.format(format, Long.parseLong(binary));
+            answer[i] = String.format(format, binary);
             answer[i] = answer[i].replaceAll("1", "#");
             answer[i] = answer[i].replaceAll("0", " ");
         }
