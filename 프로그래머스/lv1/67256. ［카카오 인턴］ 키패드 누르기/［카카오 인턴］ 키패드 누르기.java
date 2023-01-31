@@ -1,10 +1,10 @@
 class Keypad {
-    String num;
-    int row;
-    int col;
+    private String name;
+    private int row;
+    private int col;
 
-    public Keypad(String num, int row, int col) {
-        this.num = num;
+    public Keypad(String name, int row, int col) {
+        this.name = name;
         this.row = row;
         this.col = col;
     }
@@ -13,11 +13,28 @@ class Keypad {
         this.row = row;
         this.col = col;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+    
+    int getDistance(Keypad k) {
+       return Math.abs(k.row - this.row) + Math.abs(k.col - this.col); 
+    }
 }
 
 class Solution {
     public String solution(int[] numbers, String hand) {
         StringBuilder sb = new StringBuilder();
+        
         Keypad[] keypad = new Keypad[10];
         Keypad left = new Keypad("L", 3, 0);
         Keypad right = new Keypad("R", 3, 2);
@@ -35,26 +52,22 @@ class Solution {
         for (int n : numbers) {
             String next;
             if (n == 1 | n == 4 | n == 7) {
-                next = left.num;
+                next = left.getName();
                 left.setRowCol(n/3, 0);
             } else if (n == 3 | n == 6 | n == 9) {
-                next = right.num;
+                next = right.getName();
                 right.setRowCol(n/3 - 1, 2);
+            } else if (left.getDistance(keypad[n]) == right.getDistance(keypad[n])) {
+                next = hand.equals("right") ? right.getName() : left.getName();
+            } else
+                next =left.getDistance(keypad[n]) < right.getDistance(keypad[n]) ? left.getName() : right.getName();
+            
+            if (next.equals(right.getName())) {
+                sb.append(right.getName());
+                right.setRowCol(keypad[n].getRow(), keypad[n].getCol());
             } else {
-                int L_dist = Math.abs(keypad[n].row - left.row) + Math.abs(keypad[n].col - left.col);
-                int R_dist = Math.abs(keypad[n].row - right.row) + Math.abs(keypad[n].col - right.col);
-
-                if (L_dist == R_dist)
-                    next = hand.equals("right") ? right.num : left.num;
-                else
-                    next = L_dist < R_dist ? left.num : right.num;
-            }
-            if (next.equals(right.num)) {
-                sb.append(right.num);
-                right.setRowCol(keypad[n].row, keypad[n].col);
-            } else {
-                sb.append(left.num);
-                left.setRowCol(keypad[n].row, keypad[n].col);
+                sb.append(left.getName());
+                left.setRowCol(keypad[n].getRow(), keypad[n].getCol());
             }
         }
 
