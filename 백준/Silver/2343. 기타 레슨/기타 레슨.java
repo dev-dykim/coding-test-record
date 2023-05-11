@@ -1,10 +1,8 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
@@ -14,15 +12,34 @@ public class Main {
     static void input() {
         N = scan.nextInt();
         M = scan.nextInt();
-        A = new int[N+1];
-        for(int i = 1; i <= N; i++) {
+        A = new int[N];
+        for (int i = 0; i < N; i++) {
             A[i] = scan.nextInt();
         }
     }
 
-    static boolean determine(int x) {
+    static void pro() {
+        int L = 1, R = 1000000000;
+        for (int i = 0; i < N; i++) {
+            L = Math.max(L, A[i]);   
+        }
+        int result = 0;
+        while (L <= R) {
+            int mid = (L + R) / 2;
+            if (findCnt(mid)) {
+                result = mid;
+                R = mid - 1;
+            } else {
+                L = mid + 1;
+            }
+        }
+
+        System.out.println(result);
+    }
+
+    static boolean findCnt(int x) {
         int sum = 0, cnt = 1;
-        for(int i = 1; i <= N; i++) {
+        for(int i = 0; i < N; i++) {
             if(sum + A[i] > x) {
                 cnt++;
                 sum = A[i];
@@ -33,27 +50,11 @@ public class Main {
         return cnt <= M;
     }
 
-    static void pro() {
-        int L = 1, R = 1000000000, ans = 0;
-        for(int i = 1; i <= N; i++) {
-            L = Math.max(L, A[i]);
-        }
-        while(L <= R) {
-            int mid = (L + R) / 2;
-            if(determine(mid)) {
-                ans = mid;
-                R = mid - 1;
-            } else {
-                L = mid + 1;
-            }
-        }
-        System.out.println(ans);
-    }
-
     public static void main(String[] args) {
         input();
         pro();
     }
+
 
     static class FastReader {
         BufferedReader br;
@@ -61,6 +62,10 @@ public class Main {
 
         public FastReader() {
             br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        public FastReader(String s) throws FileNotFoundException {
+            br = new BufferedReader(new FileReader(new File(s)));
         }
 
         String next() {
@@ -96,5 +101,4 @@ public class Main {
             return str;
         }
     }
-
 }
