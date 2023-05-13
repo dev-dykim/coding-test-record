@@ -14,14 +14,7 @@ class Solution {
         list.sort(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
-                if (Integer.parseInt("" + o1 + o2) > Integer.parseInt("" + o2 + o1)) {
-                    return -1;
-                } else if (Integer.parseInt("" + o1 + o2) < Integer.parseInt("" + o2 + o1)) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
+                return Integer.parseInt("" + o2 + o1) -Integer.parseInt("" + o1 + o2);}
         });
 
         for (int num : list) {
