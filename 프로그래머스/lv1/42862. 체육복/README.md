@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 69.5 MB, 시간: 0.02 ms
+메모리: 87.8 MB, 시간: 0.04 ms
 
 ### 구분
 
@@ -12,7 +12,7 @@
 
 ### 채점결과
 
-<br/>정확성: 100.0<br/>합계: 100.0 / 100.0
+Empty
 
 ### 문제 설명
 
@@ -70,8 +70,6 @@
 <h5>문제가 잘 안풀린다면😢</h5>
 
 <p>힌트가 필요한가요? [코딩테스트 연습 힌트 모음집]으로 오세요! → <a href="https://school.programmers.co.kr/learn/courses/14743?itm_content=lesson42862" target="_blank" rel="noopener">클릭</a></p>
-
-<p><a href="http://hsin.hr/coci/archive/2009_2010/contest6_tasks.pdf" target="_blank" rel="noopener">출처</a></p>
 
 <p>※ 공지 - 2019년 2월 18일 지문이 리뉴얼되었습니다.<br>
 ※ 공지 - 2019년 2월 27일, 28일 테스트케이스가 추가되었습니다.<br>
