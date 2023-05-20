@@ -59,7 +59,7 @@ class Solution {
         while (!pq.isEmpty()) {
             Info info = pq.poll();
 
-            if (dist[info.idx] != info.dist) continue;
+            if (dist[info.idx] < info.dist) continue;
 
             for (Edge e : edges[info.idx]) {
                 if (dist[info.idx] + e.weight >= dist[e.to])
