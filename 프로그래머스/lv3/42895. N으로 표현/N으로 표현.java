@@ -1,13 +1,12 @@
 class Solution {
     static int N, number, answer = Integer.MAX_VALUE;
     static int[] arr;
-    static boolean found = true;
 
     public int solution(int N, int number) {
         this.N = N;
         this.number = number;
 
-        arr = new int[6];
+        arr = new int[8];
         for (int i = 1; i < arr.length; i++) {
             arr[i] = arr[i-1] * 10 + N;
         }
