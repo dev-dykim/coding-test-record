@@ -1,90 +1,80 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 class Solution {
     public int[] solution(String[] words, String[] queries) {
         int[] answer = new int[queries.length];
 
-        HashMap<Integer, Trie> trie = new HashMap<>();
-        HashMap<Integer, Trie> reverse_trie = new HashMap<>();
-        
-        for(int i=0; i<words.length; i++){
-            int n = words[i].length();
-            
-            trie.computeIfAbsent(n, f-> new Trie()).insert(words[i]);
-            reverse_trie.computeIfAbsent(n, f-> new Trie()).insert(reverse(words[i]));
+        Map<Integer, WordTree> tree = new HashMap<>();
+        Map<Integer, WordTree> reverseTree = new HashMap<>();
+
+        for (String word : words) {
+            tree.computeIfAbsent(word.length(), key -> new WordTree())
+                    .insert(word);
+            reverseTree.computeIfAbsent(word.length(), key -> new WordTree())
+                    .insert(reverse(word));
         }
-        
-        for(int i=0; i<queries.length; i++){
+
+        for (int i = 0; i < queries.length; i++) {
             String query = queries[i];
             
-            if(query.charAt(0) == '?'){
-                Trie t = reverse_trie.get(query.length());
-                if(t != null) answer[i] = t.match(reverse(query));
+            if (query.startsWith("?")) {
+                WordTree t = reverseTree.get(query.length());
+                if (t != null) answer[i] = t.match(reverse(query));
+            } else {
+                WordTree t= tree.get(query.length());
+                if (t != null) answer[i] = t.match(query);
             }
-            else {
-                Trie t = trie.get(query.length());
-                if(t != null) answer[i] = t.match(query);
-            }              
         }
-        
+
         return answer;
     }
-    
-    String reverse(String word){
+
+    String reverse(String word) {
         return new StringBuilder(word).reverse().toString();
     }
 }
 
-class TrieNode{
-    HashMap<Character, TrieNode> childNodes = new HashMap<>();
+class Node {
+    Map<Character, Node> childNode = new HashMap<>();
     int useCnt;
-    
-    HashMap<Character, TrieNode> getChild(){
-        return this.childNodes;
-    }    
-    
-    int getUseCount(){
-        return useCnt;
-    }
 }
 
-class Trie{
-    TrieNode root;
-    
-    Trie(){
-        root = new TrieNode();
-    }
-    
-    void insert(String str){
-        TrieNode curNode = root;     
-        curNode.useCnt ++;
-        
-        for(char c : str.toCharArray()){
-            curNode = curNode.getChild().computeIfAbsent(c, f-> new TrieNode());
-            curNode.useCnt ++; 
-        }
-    }
-       
-    int match(String str){
-        TrieNode curNode = root;
+class WordTree {
+    Node rootNode;
 
-		//전체가 ?인 경우
-        if(str.charAt(0) == '?'){
-            return curNode.getUseCount();
+    WordTree() {
+        rootNode = new Node();
+    }
+
+    void insert(String str) {
+        Node curNode = this.rootNode;
+        curNode.useCnt++;
+
+        for(int i=0; i<str.length(); i++) {
+            curNode = curNode.childNode.computeIfAbsent(str.charAt(i), key -> new Node());
+            curNode.useCnt++;
         }
-            
-        for(char c : str.toCharArray()){       
-            if(c == '?'){
-                return curNode.getUseCount();
+    }
+
+    int match(String str) {
+        Node curNode = rootNode;
+
+        if (str.charAt(0) == '?') {
+            return curNode.useCnt;
+        }
+
+        for (char c : str.toCharArray()) {
+            if (c == '?') {
+                return curNode.useCnt;
             }
-            
-            curNode = curNode.getChild().get(c);
-            
-            if(curNode == null){
+
+            curNode = curNode.childNode.get(c);
+
+            if (curNode == null) {
                 return 0;
             }
         }
-        
         return 0;
     }
 }
