@@ -1,49 +1,52 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
-
     static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
     static int N;
-    static ArrayList<Integer>[] A;
-    static int[] ans;
+    static ArrayList<Integer>[] adj;
     static boolean[] visit;
+    static int[] parent;
 
     static void input() {
         N = scan.nextInt();
-        A = new ArrayList[N+1];
-        for(int i = 0; i <= N; i++) {
-            A[i] = new ArrayList<>();
+        adj = new ArrayList[N+1];
+        for (int i = 1; i <= N; i++) {
+            adj[i] = new ArrayList<>();
         }
-        for(int i = 1; i < N; i++) {
+
+        for (int i = 1; i < N; i++) {
             int x = scan.nextInt();
             int y = scan.nextInt();
-            A[x].add(y);
-            A[y].add(x);
+            adj[x].add(y);
+            adj[y].add(x);
         }
-        ans = new int[N+1];
-        visit = new boolean[N+1];
-    }
 
-    static void dfs(int idx) {
-        visit[idx] = true;
-        for(int i = 0; i < A[idx].size(); i++) {
-            int nidx = A[idx].get(i);
-            if(visit[nidx]) continue;
-            ans[nidx] = idx;
-            dfs(nidx);
-        }
+        visit = new boolean[N+1];
+        parent = new int[N+1];
     }
 
     static void pro() {
         dfs(1);
-        for(int i = 2; i <= N; i++) {
-            System.out.println(ans[i]);
+
+        for (int i = 2; i <= N; i++) {
+            sb.append(parent[i]).append('\n');
+        }
+
+        System.out.println(sb.toString());
+    }
+
+    private static void dfs(int now) {
+        visit[now] = true;
+
+        for (int next : adj[now]) {
+            if (visit[next]) continue;
+            parent[next] = now;
+            visit[next] = true;
+            dfs(next);
         }
     }
 
@@ -60,8 +63,12 @@ public class Main {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
+        public FastReader(String s) throws FileNotFoundException {
+            br = new BufferedReader(new FileReader(new File(s)));
+        }
+
         String next() {
-            while( st==null || !st.hasMoreElements()){
+            while (st == null || !st.hasMoreElements()) {
                 try {
                     st = new StringTokenizer(br.readLine());
                 } catch (IOException e) {
@@ -71,11 +78,19 @@ public class Main {
             return st.nextToken();
         }
 
-        int nextInt(){
+        int nextInt() {
             return Integer.parseInt(next());
         }
 
-        String nextLine(){
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+
+        String nextLine() {
             String str = "";
             try {
                 str = br.readLine();
@@ -85,5 +100,4 @@ public class Main {
             return str;
         }
     }
-
 }
